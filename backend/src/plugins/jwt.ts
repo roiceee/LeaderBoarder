@@ -6,19 +6,28 @@ export default fastifyPlugin(async function (
   fastify: FastifyInstance,
   opts: any
 ) {
-
   fastify.decorate(
     "authenticate",
     async function (request: FastifyRequest, reply: FastifyReply) {
       try {
         if (!request.headers.authorization) {
-          throw new Error("No authorization header");
+          reply.send({
+            statusCode: 401,
+            error: "Unauthorized",
+            message: "No token",
+          });
+          return;
         }
 
         const token = request.headers.authorization?.split(" ")[1];
 
         if (!token) {
-          throw new Error("No token");
+          reply.send({
+            statusCode: 401,
+            error: "Unauthorized",
+            message: "No token",
+          });
+          return;
         }
 
         const verifier = CognitoJwtVerifier.create({
