@@ -14,12 +14,14 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/jwt": "^9.0.1",
+    "aws-jwt-verify": "^4.0.1",
     "dotenv": "^16.4.7",
     "fastify": "^5.1.0",
     "fastify-plugin": "^5.0.1"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
+    "@types/jwk-to-pem": "^2.0.3",
     "@types/node": "^22.10.1",
     "i": "^0.3.7",
     "tsc-watch": "^6.2.1",

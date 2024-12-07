@@ -7,5 +7,7 @@ declare module "fastify" {
     HttpResponse = http.ServerResponse
   > {
     authenticate: any;
+    sign: any;
+    verify: any;
   }
 }

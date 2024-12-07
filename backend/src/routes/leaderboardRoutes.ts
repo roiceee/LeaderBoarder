@@ -4,7 +4,7 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
   fastify.get(
     "/",
     {
-      onRequest: [fastify.authenticate],
+      preValidation: [fastify.authenticate],
     },
     async (request, response) => {
       return "leaderboard\n";

@@ -1,25 +1,37 @@
-import fastifyJwt from "@fastify/jwt";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { fastifyPlugin } from "fastify-plugin";
 
-export default fastifyPlugin(function (
+export default fastifyPlugin(async function (
   fastify: FastifyInstance,
-  opts: any,
-  done: any
+  opts: any
 ) {
-  fastify.register(fastifyJwt, {
-    secret: process.env.JWTSECRET || "defaultSecret",
-  });
 
   fastify.decorate(
     "authenticate",
     async function (request: FastifyRequest, reply: FastifyReply) {
       try {
-        await request.jwtVerify();
+        if (!request.headers.authorization) {
+          throw new Error("No authorization header");
+        }
+
+        const token = request.headers.authorization?.split(" ")[1];
+
+        if (!token) {
+          throw new Error("No token");
+        }
+
+        const verifier = CognitoJwtVerifier.create({
+          userPoolId: process.env.COGNITO_USER_POOL_ID || "",
+          tokenUse: "access",
+          clientId: process.env.COGNITO_CLIENT_ID || "",
+        });
+
+        const payload = await verifier.verify(token);
+        console.log(payload);
       } catch (err) {
         reply.send(err);
       }
     }
   );
-  done();
 });
