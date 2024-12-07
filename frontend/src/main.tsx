@@ -12,7 +12,7 @@ const cognitoAuthConfig: AuthProviderProps = {
   client_id: "t4154o3mdk97uhvjmunqgmf",
   redirect_uri: "http://localhost:5173",
   response_type: "code",
-  scope: "openid",
+  scope: "openid leaderboarder-server/access:general",
   automaticSilentRenew: true,
   onSigninCallback: () => {
     window.history.replaceState({}, document.title, window.location.pathname);
