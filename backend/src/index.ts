@@ -1,11 +1,13 @@
 import fastify from "fastify";
-import userRoutes from "./routes/userRoute";
 import leaderboardRoutes from "./routes/leaderboardRoutes";
+import userRoutes from "./routes/userRoute";
+import leaderboardLiveRoutes from "./routes/leaderboard-live/leaderboardliveRoutes";
 
-const server = fastify({logger: true});
+const server = fastify({ logger: true });
 
 server.register(userRoutes, { prefix: "/user" });
 server.register(leaderboardRoutes, { prefix: "/leaderboard" });
+server.register(leaderboardLiveRoutes, { prefix: "/live" });
 
 server.get("/ping", async (request, reply) => {
   return "ping\n";
