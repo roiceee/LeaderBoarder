@@ -10,10 +10,13 @@ const server = fastify({
   logger: false,
 });
 
+//database connection
 server.register(prisma);
 
+//jwt authentication
 server.register(jwt);
 
+//register routes
 server.register(userRoutes, { prefix: "/user" });
 server.register(leaderboardRoutes, { prefix: "/leaderboard" });
 server.register(leaderboardLiveRoutes, { prefix: "/live" });

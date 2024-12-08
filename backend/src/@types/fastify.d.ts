@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import * as http from "http";
 
 declare module "fastify" {
@@ -9,5 +10,6 @@ declare module "fastify" {
     authenticate: any;
     sign: any;
     verify: any;
+    prisma: PrismaClient;
   }
 }
