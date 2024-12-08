@@ -6,11 +6,10 @@ import leaderboardRoutes from "./routes/leaderboardRoutes";
 import userRoutes from "./routes/userRoutes";
 import prisma from "./plugins/prisma";
 import fastifyMultipart from "@fastify/multipart";
+import envToLogger from "./util/logger";
 
 const server = fastify({
-  logger: {
-    enabled: true,
-  }
+  logger: envToLogger[process.env.ENVIRONMENT as keyof typeof envToLogger] ?? true,
 });
 
 //database connection
