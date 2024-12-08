@@ -1,3 +1,4 @@
+import { equal } from "assert";
 import { FastifyInstance, FastifyRequest } from "fastify";
 
 class UserService {
@@ -19,6 +20,16 @@ class UserService {
         },
       });
     }
+
+    return user;
+  }
+
+  static async deleteUser(fastify: FastifyInstance, request: FastifyRequest) {
+    const userSub: string = request.user.sub;
+
+    const user = await fastify.prisma.user.delete({
+      where: { sub: userSub },
+    });
 
     return user;
   }

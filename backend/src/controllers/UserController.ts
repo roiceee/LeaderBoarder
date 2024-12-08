@@ -13,7 +13,17 @@ class UserController {
         fastify,
         request
       );
-      reply.code(200).send({ user });
+      reply.code(200).send(user);
+    } catch (err) {
+      fastify.log.error(err);
+      reply.code(500).send(err);
+    }
+  }
+
+  static async deleteUser(fastify: FastifyInstance, request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const user: User = await UserService.deleteUser(fastify, request);
+      reply.code(200).send(user);
     } catch (err) {
       fastify.log.error(err);
       reply.code(500).send(err);
