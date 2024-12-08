@@ -8,8 +8,6 @@ class UserService {
     const userSub: string = request.user.sub;
     let user;
 
-    
-
     user = await fastify.prisma.user.findFirst({
       where: { sub: { equals: userSub } },
     });
