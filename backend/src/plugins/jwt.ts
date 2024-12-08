@@ -1,6 +1,7 @@
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { fastifyPlugin } from "fastify-plugin";
+import CustomFastifyRequest from "../@types/request";
 
 export default fastifyPlugin(async function (
   fastify: FastifyInstance,
@@ -37,7 +38,18 @@ export default fastifyPlugin(async function (
         });
 
         const payload = await verifier.verify(token);
-        console.log(payload);
+
+        if (!payload.scope.includes(process.env.GENERAL_ACCESS_SCOPE!)) {
+          reply.send({
+            statusCode: 401,
+            error: "Unauthorized",
+            message: "Insufficient scope",
+          });
+          return;
+        }
+
+        request.user = payload;
+        return;
       } catch (err) {
         reply.send(err);
       }
