@@ -4,28 +4,24 @@ import UserService from "../services/UserService";
 
 class UserController {
   static async createUserIfNotExists(
-    fastify: FastifyInstance,
     request: FastifyRequest,
     reply: FastifyReply
   ) {
     try {
-      const user: User = await UserService.createUserIfNotExists(
-        fastify,
-        request
-      );
+      const user: User = await UserService.createUserIfNotExists(request);
       reply.code(200).send(user);
     } catch (err) {
-      fastify.log.error(err);
+      request.server.log.error(err);
       reply.code(500).send(err);
     }
   }
 
-  static async deleteUser(fastify: FastifyInstance, request: FastifyRequest, reply: FastifyReply) {
+  static async deleteUser(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const user: User = await UserService.deleteUser(fastify, request);
+      const user: User = await UserService.deleteUser(request);
       reply.code(200).send(user);
     } catch (err) {
-      fastify.log.error(err);
+      request.server.log.error(err);
       reply.code(500).send(err);
     }
   }

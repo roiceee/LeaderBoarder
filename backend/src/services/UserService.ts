@@ -1,20 +1,16 @@
-import { equal } from "assert";
-import { FastifyInstance, FastifyRequest } from "fastify";
+import { FastifyRequest } from "fastify";
 
 class UserService {
-  static async createUserIfNotExists(
-    fastify: FastifyInstance,
-    request: FastifyRequest
-  ) {
+  static async createUserIfNotExists(request: FastifyRequest) {
     const userSub: string = request.user.sub;
     let user;
 
-    user = await fastify.prisma.user.findFirst({
+    user = await request.server.prisma.user.findFirst({
       where: { sub: { equals: userSub } },
     });
 
     if (user == undefined) {
-      user = await fastify.prisma.user.create({
+      user = await request.server.prisma.user.create({
         data: {
           sub: userSub,
         },
@@ -24,10 +20,10 @@ class UserService {
     return user;
   }
 
-  static async deleteUser(fastify: FastifyInstance, request: FastifyRequest) {
+  static async deleteUser(request: FastifyRequest) {
     const userSub: string = request.user.sub;
 
-    const user = await fastify.prisma.user.delete({
+    const user = await request.server.prisma.user.delete({
       where: { sub: userSub },
     });
 

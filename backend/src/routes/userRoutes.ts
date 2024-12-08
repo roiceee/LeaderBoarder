@@ -35,7 +35,7 @@ async function userRoutes(fastify: FastifyInstance, options: any) {
       },
     },
     async (request, reply) => {
-      return UserController.createUserIfNotExists(fastify, request, reply);
+      return UserController.createUserIfNotExists(request, reply);
     }
   );
 
@@ -72,7 +72,7 @@ async function userRoutes(fastify: FastifyInstance, options: any) {
       },
     },
     async (request, reply) => {
-      return UserController.deleteUser(fastify, request, reply);
+      return UserController.deleteUser(request, reply);
     }
   );
 }
