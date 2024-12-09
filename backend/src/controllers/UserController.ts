@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import UserService from "../services/UserService";
 
 class UserController {
