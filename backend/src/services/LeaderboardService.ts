@@ -1,7 +1,7 @@
 import { Leaderboard, User } from "@prisma/client";
 import { FastifyRequest } from "fastify";
-import uniqueSlug from "unique-slug";
 import { CreateLeaderboardRequestBody } from "../schema/leaderboard";
+import { ulid } from "ulid";
 
 export default class LeaderboardService {
   static async createLeaderboard(
@@ -10,8 +10,8 @@ export default class LeaderboardService {
   ): Promise<Leaderboard> {
     const { name, sourceType } = request.body;
 
-    const slug = uniqueSlug();
-    const publicSlug = uniqueSlug();
+    const slug = ulid();
+    const publicSlug = ulid();
 
     if (sourceType === "GOOGLE_SHEET") {
       throw new Error("Google Sheets not supported yet");

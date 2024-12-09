@@ -18,12 +18,11 @@
     "@fastify/swagger": "^9.4.0",
     "@fastify/swagger-ui": "^5.2.0",
     "@prisma/client": "^6.0.1",
-    "@types/unique-slug": "^4.0.0",
     "aws-jwt-verify": "^4.0.1",
     "dotenv": "^16.4.7",
     "fastify": "^5.1.0",
     "fastify-plugin": "^5.0.1",
-    "unique-slug": "^5.0.0"
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
