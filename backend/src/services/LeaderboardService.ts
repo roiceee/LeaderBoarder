@@ -25,4 +25,54 @@ export default class LeaderboardService {
 
     return leaderboard;
   }
+
+  static async updateLeaderboard(
+    request: FastifyRequest<{ Body: { name: string } }>,
+    user: User
+  ): Promise<Leaderboard> {
+    const { slug } = request.params as { slug: string };
+    const { name } = request.body;
+
+    const leaderboard = await request.server.prisma.leaderboard.update({
+      where: {
+        slug: slug,
+        userId: user.id,
+      },
+      data: {
+        name: name,
+      },
+    });
+
+    return leaderboard;
+  }
+
+  static async getUserLeaderboards(
+    request: FastifyRequest,
+    user: User
+  ): Promise<Leaderboard[]> {
+    let { orderBy } = request.query as {
+      orderBy:
+        | "createdAt:desc"
+        | "updatedAt:desc"
+        | "createdAt:asc"
+        | "updatedAt:asc";
+    };
+
+    request.server.log.info({ orderBy });
+
+    if (!orderBy) {
+      orderBy = "createdAt:desc";
+    }
+
+    const leaderboards = await request.server.prisma.leaderboard.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        [orderBy.split(":")[0]]: orderBy.split(":")[1],
+      },
+    });
+
+    return leaderboards;
+  }
 }

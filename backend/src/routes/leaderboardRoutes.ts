@@ -48,6 +48,103 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
       return LeaderboardController.createLeaderboardDirect(request, reply);
     }
   );
+
+  fastify.patch(
+    "/update/:slug",
+    {
+      preValidation: [fastify.authenticate],
+      schema: {
+        headers: {
+          type: "object",
+          properties: {
+            Authorization: { type: "string" },
+          },
+        },
+        body: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+          },
+        },
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              id: { type: "number" },
+              name: { type: "string" },
+              publicSlug: { type: "string" },
+              slug: { type: "string" },
+              createdAt: { type: "string" },
+              updatedAt: { type: "string" },
+            },
+          },
+          401: {
+            type: "object",
+            properties: {
+              message: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Body: { name: string } }>, reply) => {
+      return LeaderboardController.updateLeaderboard(request, reply);
+    }
+  );
+
+  fastify.get(
+    "/user",
+    {
+      preValidation: [fastify.authenticate],
+      schema: {
+        headers: {
+          type: "object",
+          properties: {
+            Authorization: { type: "string" },
+          },
+        },
+        querystring: {
+          type: "object",
+          properties: {
+            orderBy: {
+              type: "string",
+              enum: [
+                "createdAt:desc",
+                "updatedAt:desc",
+                "createdAt:asc",
+                "updatedAt:asc",
+              ],
+            },
+          },
+        },
+        response: {
+          200: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id: { type: "number" },
+                name: { type: "string" },
+                publicSlug: { type: "string" },
+                slug: { type: "string" },
+                createdAt: { type: "string" },
+                updatedAt: { type: "string" },
+              },
+            },
+          },
+          401: {
+            type: "object",
+            properties: {
+              message: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    async (request: FastifyRequest, reply) => {
+      return LeaderboardController.getUserLeaderboards(request, reply);
+    }
+  );
 }
 
 export default leaderboardRoutes;
