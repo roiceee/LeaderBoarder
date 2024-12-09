@@ -30,6 +30,16 @@ class UserService {
     return user;
   }
 
+  static async getUser(request: FastifyRequest) {
+    
+    const userSub: string = request.user.sub;
+
+    const user = await request.server.prisma.user.findFirst({
+      where: { sub: { equals: userSub } },
+    });
+
+    return user;
+  }
 }
 
 export default UserService;
