@@ -1,24 +1,55 @@
-import { FastifyInstance } from "fastify";
-import { createLeaderboard } from "../services/leaderboardService";
+import { FastifyInstance, FastifyRequest } from "fastify";
+import LeaderboardController from "../controllers/LeaderboardController";
+import { CreateLeaderboardRequestBody } from "../schema/leaderboard";
 
 async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
-  fastify.get(
-    "/",
-    {
-      preValidation: [fastify.authenticate],
-    },
-    async (request, response) => {
-      return "leaderboard\n";
-    }
-  );
-
   fastify.post(
-    "/",
+    "/create",
     {
       preValidation: [fastify.authenticate],
+      schema: {
+        headers: {
+          type: "object",
+          properties: {
+            Authorization: { type: "string" },
+          },
+        },
+        body: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            sourceType: {
+              type: "string",
+              enum: ["GOOGLE_SHEET", "DIRECT_INPUT"],
+            },
+          },
+        },
+        response: {
+          201: {
+            type: "object",
+            properties: {
+              id: { type: "number" },
+              name: { type: "string" },
+              publicSlug: { type: "string" },
+              slug: { type: "string" },
+              createdAt: { type: "string" },
+              updatedAt: { type: "string" },
+            },
+          },
+          401: {
+            type: "object",
+            properties: {
+              message: { type: "string" },
+            },
+          },
+        },
+      },
     },
-    async (request, response) => {
-      // return createLeaderboard();
+    async (
+      request: FastifyRequest<{ Body: CreateLeaderboardRequestBody }>,
+      reply
+    ) => {
+      return LeaderboardController.createLeaderboard(request, reply);
     }
   );
 }
