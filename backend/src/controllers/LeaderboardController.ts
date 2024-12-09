@@ -73,6 +73,44 @@ class LeaderboardController {
       reply.code(500).send(err);
     }
   }
+  static async deleteLeaderboard(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      if (!request.user) {
+        return reply.code(401).send({ message: "Unauthorized" });
+      }
+      const user = await UserService.getUser(request);
+      if (!user) {
+        return reply.code(404).send({ message: "User not found" });
+      }
+
+      await LeaderboardService.deleteLeaderboard(request, user);
+
+      reply.code(204).send();
+    } catch (err) {
+      request.log.error(err);
+      reply.code(500).send(err);
+    }
+  }
+  static async getLeaderboard(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      if (!request.user) {
+        return reply.code(401).send({ message: "Unauthorized" });
+      }
+      const user = await UserService.getUser(request);
+      if (!user) {
+        return reply.code(404).send({ message: "User not found" });
+      }
+      const leaderboard = await LeaderboardService.getLeaderboard(
+        request,
+        user
+      );
+
+      reply.code(200).send(leaderboard);
+    } catch (err) {
+      request.log.error(err);
+      reply.code(500).send(err);
+    }
+  }
 }
 
 export default LeaderboardController;

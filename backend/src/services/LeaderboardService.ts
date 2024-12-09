@@ -75,4 +75,40 @@ export default class LeaderboardService {
 
     return leaderboards;
   }
+
+  static async deleteLeaderboard(
+    request: FastifyRequest,
+    user: User
+  ): Promise<Leaderboard> {
+    const { slug } = request.params as { slug: string };
+
+    const leaderboard = await request.server.prisma.leaderboard.delete({
+      where: {
+        slug: slug,
+        userId: user.id,
+      },
+    });
+
+    return leaderboard;
+  }
+
+  static async getLeaderboard(
+    request: FastifyRequest,
+    user: User
+  ): Promise<Leaderboard> {
+    const { slug } = request.params as { slug: string };
+
+    const leaderboard = await request.server.prisma.leaderboard.findUnique({
+      where: {
+        slug: slug,
+        userId: user.id,
+      },
+    });
+
+    if (!leaderboard) {
+      throw new Error(`Leaderboard with slug ${slug} not found`);
+    }
+
+    return leaderboard;
+  }
 }
