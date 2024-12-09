@@ -4,9 +4,9 @@ import { CreateLeaderboardRequestBody } from "../schema/leaderboard";
 import UserService from "../services/UserService";
 
 class LeaderboardController {
-  static async createLeaderboard(
+  static async createLeaderboardDirect(
     request: FastifyRequest<{ Body: CreateLeaderboardRequestBody }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     try {
       if (!request.user) {
@@ -16,7 +16,7 @@ class LeaderboardController {
       if (!user) {
         return reply.code(404).send({ message: "User not found" });
       }
-      const leaderboard = await LeaderboardService.createLeaderboard(
+      const leaderboard = await LeaderboardService.createLeaderboardDirect(
         request,
         user
       );
@@ -24,7 +24,7 @@ class LeaderboardController {
       reply.code(201).send(leaderboard);
     } catch (err) {
       request.log.error(err);
-      reply.code(500);
+      reply.code(500).send(err);
     }
   }
 }

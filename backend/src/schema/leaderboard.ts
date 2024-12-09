@@ -1,6 +1,5 @@
 export interface CreateLeaderboardRequestBody {
   name: string;
-  sourceType: "GOOGLE_SHEET" | "DIRECT_INPUT";
 }
 
 export interface CreateLeaderboardResponseBody {

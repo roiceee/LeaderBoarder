@@ -4,7 +4,7 @@ import { CreateLeaderboardRequestBody } from "../schema/leaderboard";
 
 async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
   fastify.post(
-    "/create",
+    "/create/direct",
     {
       preValidation: [fastify.authenticate],
       schema: {
@@ -18,10 +18,6 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
           type: "object",
           properties: {
             name: { type: "string" },
-            sourceType: {
-              type: "string",
-              enum: ["GOOGLE_SHEET", "DIRECT_INPUT"],
-            },
           },
         },
         response: {
@@ -49,7 +45,7 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
       request: FastifyRequest<{ Body: CreateLeaderboardRequestBody }>,
       reply
     ) => {
-      return LeaderboardController.createLeaderboard(request, reply);
+      return LeaderboardController.createLeaderboardDirect(request, reply);
     }
   );
 }
