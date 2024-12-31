@@ -96,6 +96,33 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
       );
     }
   )
+
+  fastify.patch(
+    "/:slug/entries/update",
+    {
+      preValidation: [fastify.authenticate],
+    },
+    async (request: FastifyRequest, reply) => {
+      return LeaderboardEntryController.updateLeaderboardEntries(
+        request,
+        reply
+      );
+    }
+  )
+
+  fastify.get(
+    "/:slug/entries",
+    {
+      preValidation: [fastify.authenticate],
+    },
+    async (request: FastifyRequest, reply) => {
+      return LeaderboardEntryController.getLeaderboardEntries(
+        request,
+        reply
+      );
+    }
+  )
+  
 }
 
 export default leaderboardRoutes;
