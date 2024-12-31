@@ -7,6 +7,9 @@ import {
   deleteLeaderboardSchema,
   getLeaderboardSchema,
   addLeaderboardEntriesSchema,
+  updateLeaderboardEntriesSchema,
+  deleteLeaderboardEntriesSchema,
+  getLeaderboardEntriesSchema,
 } from "../schema/leaderboardRoutes";
 import { CreateLeaderboardRequestBody } from "../@types/leaderboard";
 import LeaderboardEntryController from "../controllers/LeaderboardEntryController";
@@ -74,7 +77,7 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
     "/:slug/entries/create",
     {
       preValidation: [fastify.authenticate],
-      schema: addLeaderboardEntriesSchema
+      schema: addLeaderboardEntriesSchema,
     },
     async (request: FastifyRequest, reply) => {
       return LeaderboardEntryController.createLeaderboardEntries(
@@ -88,6 +91,7 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
     "/:slug/entries/delete",
     {
       preValidation: [fastify.authenticate],
+      schema: deleteLeaderboardEntriesSchema,
     },
     async (request: FastifyRequest, reply) => {
       return LeaderboardEntryController.deleteLeaderboardEntries(
@@ -95,12 +99,13 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
         reply
       );
     }
-  )
+  );
 
   fastify.patch(
     "/:slug/entries/update",
     {
       preValidation: [fastify.authenticate],
+      schema: updateLeaderboardEntriesSchema,
     },
     async (request: FastifyRequest, reply) => {
       return LeaderboardEntryController.updateLeaderboardEntries(
@@ -108,21 +113,18 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
         reply
       );
     }
-  )
+  );
 
   fastify.get(
     "/:slug/entries",
     {
       preValidation: [fastify.authenticate],
+      schema: getLeaderboardEntriesSchema,
     },
     async (request: FastifyRequest, reply) => {
-      return LeaderboardEntryController.getLeaderboardEntries(
-        request,
-        reply
-      );
+      return LeaderboardEntryController.getLeaderboardEntries(request, reply);
     }
-  )
-  
+  );
 }
 
 export default leaderboardRoutes;

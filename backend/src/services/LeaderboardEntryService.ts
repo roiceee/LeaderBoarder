@@ -124,6 +124,12 @@ class LeaderboardEntryService {
     reply: FastifyReply,
     leaderboard: Leaderboard
   ) {
+    let {orderBy} = request.query as { orderBy: string };
+
+    if (!orderBy) {
+        orderBy = "id:asc";
+    }
+
     const leaderboardWithEntries =
       await request.server.prisma.leaderboard.findUnique({
         where: {
@@ -132,7 +138,7 @@ class LeaderboardEntryService {
         include: {
           leaderboardEntries: {
             orderBy: {
-              id: "asc",
+              [orderBy.split(":")[0]]: orderBy.split(":")[1],
             },
           },
         },
