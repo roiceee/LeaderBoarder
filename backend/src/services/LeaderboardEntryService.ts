@@ -91,16 +91,18 @@ class LeaderboardEntryService {
       name: entry.name,
     }));
 
-    leaderboardEntries.forEach(async (entry) => {
-      await request.server.prisma.leaderboardEntry.update({
+    const updatePromises = leaderboardEntries.map((entry) =>
+      request.server.prisma.leaderboardEntry.update({
         where: {
           id: Number(entry.id),
         },
         data: {
           name: entry.name,
         },
-      });
-    });
+      })
+    );
+
+    await request.server.prisma.$transaction(updatePromises)
 
     const leaderboardWithEntries =
       await request.server.prisma.leaderboard.findUnique({
@@ -124,10 +126,10 @@ class LeaderboardEntryService {
     reply: FastifyReply,
     leaderboard: Leaderboard
   ) {
-    let {orderBy} = request.query as { orderBy: string };
+    let { orderBy } = request.query as { orderBy: string };
 
     if (!orderBy) {
-        orderBy = "id:asc";
+      orderBy = "id:asc";
     }
 
     const leaderboardWithEntries =
