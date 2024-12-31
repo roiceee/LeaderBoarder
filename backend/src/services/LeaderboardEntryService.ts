@@ -32,6 +32,38 @@ class LeaderboardEntryService {
 
     return leaderboardWithEntries;
   }
+  static async deleteLeaderboardEntries(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    leaderboard: Leaderboard
+  ) {
+    const { entries } = request.body as { entries: { id: string }[] };
+    if (!entries) {
+      return reply.code(400).send({ message: "Entries are required" });
+    }
+    const leaderboardEntries = entries.map((entry) => ({
+      id: entry.id,
+    }));
+
+    await request.server.prisma.leaderboardEntry.deleteMany({
+      where: {
+        id: {
+          in: leaderboardEntries.map((entry) => Number(entry.id)),
+        },
+      },
+    });
+
+    const leaderboardWithEntries = await request.server.prisma.leaderboard.findUnique({
+      where: {
+        id: leaderboard.id,
+      },
+      include: {
+        leaderboardEntries: true,
+      },
+    });
+
+    return leaderboardWithEntries;
+  }
 }
 
 export default LeaderboardEntryService;

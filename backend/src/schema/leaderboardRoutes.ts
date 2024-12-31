@@ -230,6 +230,70 @@ const addLeaderboardEntriesSchema: FastifySchema = {
   },
 };
 
+const deleteLeaderboardEntriesSchema: FastifySchema = {
+  headers: {
+    type: "object",
+    properties: {
+      Authorization: { type: "string" },
+    },
+  },
+  params: {
+    type: "object",
+    properties: {
+      slug: { type: "string" },
+    },
+  },
+  body: {
+    type: "object",
+    properties: {
+      entries: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+          },
+        },
+      },
+    },
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        id: { type: "number" },
+        name: { type: "string" },
+        publicSlug: { type: "string" },
+        slug: { type: "string" },
+        createdAt: { type: "string" },
+        updatedAt: { type: "string" },
+        leaderboardEntries: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "number" },
+              name: { type: "string" },
+              leaderboardId: { type: "number" },
+              score: { type: "number" },
+              slug: { type: "string" },
+              publicSlug: { type: "string" },
+              createdAt: { type: "string" },
+              updatedAt: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    400: {
+      type: "object",
+      properties: {
+        message: { type: "string" },
+      },
+    },
+  },
+};
+
 export {
   createLeaderboardSchema,
   updateLeaderboardSchema,

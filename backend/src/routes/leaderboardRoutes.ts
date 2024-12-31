@@ -83,6 +83,19 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
       );
     }
   );
+
+  fastify.delete(
+    "/:slug/entries/delete",
+    {
+      preValidation: [fastify.authenticate],
+    },
+    async (request: FastifyRequest, reply) => {
+      return LeaderboardEntryController.deleteLeaderboardEntries(
+        request,
+        reply
+      );
+    }
+  )
 }
 
 export default leaderboardRoutes;
