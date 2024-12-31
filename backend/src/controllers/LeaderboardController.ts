@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import LeaderboardService from "../services/LeaderboardService";
-import { CreateLeaderboardRequestBody } from "../schema/leaderboard";
+import { CreateLeaderboardRequestBody } from "../@types/leaderboard";
 import UserService from "../services/UserService";
 
 class LeaderboardController {

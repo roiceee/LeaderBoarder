@@ -1,6 +1,6 @@
 import { Leaderboard, User } from "@prisma/client";
 import { FastifyRequest } from "fastify";
-import { CreateLeaderboardRequestBody } from "../schema/leaderboard";
+import { CreateLeaderboardRequestBody } from "../@types/leaderboard";
 import { ulid } from "ulid";
 
 export default class LeaderboardService {
