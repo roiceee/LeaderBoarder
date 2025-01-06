@@ -6,13 +6,17 @@ import {
   getUserLeaderboardsSchema,
   deleteLeaderboardSchema,
   getLeaderboardSchema,
-  addLeaderboardEntriesSchema,
-  updateLeaderboardEntriesSchema,
-  deleteLeaderboardEntriesSchema,
-  getLeaderboardEntriesSchema,
-} from "../schema/leaderboardRoutes";
+} from "../schema/leaderboards";
 import { CreateLeaderboardRequestBody } from "../@types/leaderboard";
 import LeaderboardEntryController from "../controllers/LeaderboardEntryController";
+import {
+  addLeaderboardEntriesSchema,
+  deleteLeaderboardEntriesSchema,
+  updateLeaderboardEntriesSchema,
+  getLeaderboardEntriesSchema,
+  getLeaderboardEntrySchema,
+  addScoreToLeaderboardEntrySchema,
+} from "../schema/leaderboardEntries";
 
 async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
   fastify.post(
@@ -123,6 +127,34 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
     },
     async (request: FastifyRequest, reply) => {
       return LeaderboardEntryController.getLeaderboardEntries(request, reply);
+    }
+  );
+
+  //get one leaderboard entry by id
+
+  fastify.get(
+    "/:slug/entries/:id",
+    {
+      preValidation: [fastify.authenticate],
+      schema: getLeaderboardEntrySchema,
+    },
+    async (request: FastifyRequest, reply) => {
+      return LeaderboardEntryController.getLeaderboardEntry(request, reply);
+    }
+  );
+
+  //add score to leaderboard entry
+  fastify.patch(
+    "/:slug/entries/:id/addScore",
+    {
+      preValidation: [fastify.authenticate],
+      // schema: addScoreToLeaderboardEntrySchema,
+    },
+    async (request: FastifyRequest, reply) => {
+      return LeaderboardEntryController.addScoreToLeaderboardEntry(
+        request,
+        reply
+      );
     }
   );
 }

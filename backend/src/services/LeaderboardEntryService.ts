@@ -102,7 +102,7 @@ class LeaderboardEntryService {
       })
     );
 
-    await request.server.prisma.$transaction(updatePromises)
+    await request.server.prisma.$transaction(updatePromises);
 
     const leaderboardWithEntries =
       await request.server.prisma.leaderboard.findUnique({
@@ -147,6 +147,53 @@ class LeaderboardEntryService {
       });
 
     return leaderboardWithEntries;
+  }
+
+  static async addScoreToLeaderboardEntry(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    leaderboard: Leaderboard
+  ) {
+    const { id } = request.params as { id: string };
+    const { score } = request.body as { score: number };
+    if (!id || !score) {
+      return reply.code(400).send({ message: "ID and score are required" });
+    }
+
+    const updatedEntry = await request.server.prisma.leaderboardEntry.update({
+      where: {
+        leaderboardId: leaderboard.id,
+        id: Number(id),
+      },
+      data: {
+        score: {
+          increment: score,
+        },
+      },
+    });
+
+    return updatedEntry;
+  }
+
+  static async getLeaderboardEntry(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    leaderboard: Leaderboard
+  ) {
+    const { id } = request.params as { id: string };
+    if (!id) {
+      return reply.code(400).send({ message: "ID is required" });
+    }
+
+    const leaderboardEntry =
+      await request.server.prisma.leaderboardEntry.findUnique({
+        where: {
+          leaderboardId: leaderboard.id,
+          id: Number(id),
+        },
+      });
+
+    return leaderboardEntry;
   }
 }
 
