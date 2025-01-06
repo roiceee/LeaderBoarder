@@ -23,28 +23,29 @@ server.register(jwt);
 
 server.register(fastifyMultipart);
 
-server.register(fastifySwagger);
-
-server.register(fastifySwaggerUi, {
-  routePrefix: "/documentation",
-  uiConfig: {
-    deepLinking: false,
-  },
-  uiHooks: {
-    onRequest: function (request, reply, next) {
-      next();
+if (process.env.ENVIRONMENT === "development") {
+  server.register(fastifySwagger);
+  server.register(fastifySwaggerUi, {
+    routePrefix: "/documentation",
+    uiConfig: {
+      deepLinking: false,
     },
-    preHandler: function (request, reply, next) {
-      next();
+    uiHooks: {
+      onRequest: function (request, reply, next) {
+        next();
+      },
+      preHandler: function (request, reply, next) {
+        next();
+      },
     },
-  },
-  staticCSP: true,
-  transformStaticCSP: (header) => header,
-  transformSpecification: (swaggerObject, request, reply) => {
-    return swaggerObject;
-  },
-  transformSpecificationClone: true,
-});
+    staticCSP: true,
+    transformStaticCSP: (header) => header,
+    transformSpecification: (swaggerObject, request, reply) => {
+      return swaggerObject;
+    },
+    transformSpecificationClone: true,
+  });
+}
 
 //register routes
 server.register(userRoutes, { prefix: "/user" });
