@@ -148,7 +148,7 @@ async function leaderboardRoutes(fastify: FastifyInstance, options: any) {
     "/:slug/entries/:id/addScore",
     {
       preValidation: [fastify.authenticate],
-      // schema: addScoreToLeaderboardEntrySchema,
+      schema: addScoreToLeaderboardEntrySchema,
     },
     async (request: FastifyRequest, reply) => {
       return LeaderboardEntryController.addScoreToLeaderboardEntry(
