@@ -1,4 +1,6 @@
 import { FastifySchema } from "fastify";
+import { leaderboardProperties, entryProperties } from "./objectProperties";
+
 
 const addLeaderboardEntriesSchema: FastifySchema = {
   headers: {
@@ -30,31 +32,7 @@ const addLeaderboardEntriesSchema: FastifySchema = {
   response: {
     201: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        leaderboardId: { type: "number" },
-        slug: { type: "string" },
-        publicSlug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-        leaderboardEntries: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              id: { type: "number" },
-              name: { type: "string" },
-              leaderboardId: { type: "number" },
-              score: { type: "number" },
-              slug: { type: "string" },
-              publicSlug: { type: "string" },
-              createdAt: { type: "string" },
-              updatedAt: { type: "string" },
-            },
-          },
-        },
-      },
+      properties: leaderboardProperties,
     },
     400: {
       type: "object",
@@ -95,30 +73,7 @@ const deleteLeaderboardEntriesSchema: FastifySchema = {
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        publicSlug: { type: "string" },
-        slug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-        leaderboardEntries: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              id: { type: "number" },
-              name: { type: "string" },
-              leaderboardId: { type: "number" },
-              score: { type: "number" },
-              slug: { type: "string" },
-              publicSlug: { type: "string" },
-              createdAt: { type: "string" },
-              updatedAt: { type: "string" },
-            },
-          },
-        },
-      },
+      properties: leaderboardProperties,
     },
     400: {
       type: "object",
@@ -160,30 +115,7 @@ const updateLeaderboardEntriesSchema: FastifySchema = {
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        publicSlug: { type: "string" },
-        slug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-        leaderboardEntries: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              id: { type: "number" },
-              name: { type: "string" },
-              leaderboardId: { type: "number" },
-              score: { type: "number" },
-              slug: { type: "string" },
-              publicSlug: { type: "string" },
-              createdAt: { type: "string" },
-              updatedAt: { type: "string" },
-            },
-          },
-        },
-      },
+      properties: leaderboardProperties,
     },
     400: {
       type: "object",
@@ -226,30 +158,7 @@ const getLeaderboardEntriesSchema: FastifySchema = {
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        publicSlug: { type: "string" },
-        slug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-        leaderboardEntries: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              id: { type: "number" },
-              name: { type: "string" },
-              leaderboardId: { type: "number" },
-              score: { type: "number" },
-              slug: { type: "string" },
-              publicSlug: { type: "string" },
-              createdAt: { type: "string" },
-              updatedAt: { type: "string" },
-            },
-          },
-        },
-      },
+      properties: leaderboardProperties,
     },
     404: {
       type: "object",
@@ -283,16 +192,7 @@ const addScoreToLeaderboardEntrySchema: FastifySchema = {
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        leaderboardId: { type: "number" },
-        score: { type: "number" },
-        slug: { type: "string" },
-        publicSlug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-      },
+      properties: entryProperties,
     },
     400: {
       type: "object",
@@ -308,28 +208,19 @@ const getLeaderboardEntrySchema: FastifySchema = {
     type: "object",
     properties: {
       Authorization: { type: "string" },
-      params: {
-        type: "object",
-        properties: {
-          slug: { type: "string" },
-          id: { type: "string" },
-        },
-      },
+    },
+  },
+  params: {
+    type: "object",
+    properties: {
+      slug: { type: "string" },
+      id: { type: "string" },
     },
   },
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        leaderboardId: { type: "number" },
-        score: { type: "number" },
-        slug: { type: "string" },
-        publicSlug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-      },
+      properties: entryProperties,
     },
     400: {
       type: "object",

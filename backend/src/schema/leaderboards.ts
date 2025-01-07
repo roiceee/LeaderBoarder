@@ -1,4 +1,5 @@
 import { FastifySchema } from "fastify";
+import { leaderboardProperties } from "./objectProperties";
 
 // schema/leaderboardSchemas.js
 const createLeaderboardSchema: FastifySchema = {
@@ -17,14 +18,7 @@ const createLeaderboardSchema: FastifySchema = {
   response: {
     201: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        publicSlug: { type: "string" },
-        slug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-      },
+      properties: leaderboardProperties,
     },
     401: {
       type: "object",
@@ -51,14 +45,7 @@ const updateLeaderboardSchema: FastifySchema = {
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        publicSlug: { type: "string" },
-        slug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-      },
+      properties: leaderboardProperties,
     },
     401: {
       type: "object",
@@ -95,14 +82,7 @@ const getUserLeaderboardsSchema: FastifySchema = {
       type: "array",
       items: {
         type: "object",
-        properties: {
-          id: { type: "number" },
-          name: { type: "string" },
-          publicSlug: { type: "string" },
-          slug: { type: "string" },
-          createdAt: { type: "string" },
-          updatedAt: { type: "string" },
-        },
+        properties: leaderboardProperties,
       },
     },
     401: {
@@ -147,14 +127,7 @@ const getLeaderboardSchema: FastifySchema = {
   response: {
     200: {
       type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        publicSlug: { type: "string" },
-        slug: { type: "string" },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
-      },
+      properties: leaderboardProperties,
     },
     404: {
       type: "object",
@@ -164,7 +137,6 @@ const getLeaderboardSchema: FastifySchema = {
     },
   },
 };
-
 
 export {
   createLeaderboardSchema,
