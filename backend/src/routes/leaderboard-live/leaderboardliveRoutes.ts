@@ -14,7 +14,6 @@ async function leaderboardLiveRoutes(fastify: FastifyInstance, options: any) {
       socket: WebSocket,
       request: FastifyRequest<{ Params: { publicSlug: string } }>
     ) => {
-      await fastify.ready();
 
       const leaderboardSlug = request.params.publicSlug as string;
 
