@@ -9,6 +9,7 @@ import fastifyMultipart from "@fastify/multipart";
 import envToLogger from "./util/logger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifySwagger from "@fastify/swagger";
+import fastifyWebsocket from "@fastify/websocket";
 
 const server = fastify({
   logger:
@@ -22,6 +23,9 @@ server.register(prisma);
 server.register(jwt);
 
 server.register(fastifyMultipart);
+
+//websocket
+server.register(fastifyWebsocket);
 
 if (process.env.ENVIRONMENT === "development") {
   server.register(fastifySwagger);

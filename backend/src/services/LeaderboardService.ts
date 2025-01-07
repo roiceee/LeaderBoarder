@@ -111,4 +111,28 @@ export default class LeaderboardService {
 
     return leaderboard;
   }
+
+  static async getLeaderBoardByPublicSlug(
+    request: FastifyRequest,
+    publicSlug: string
+  ) {
+    const leaderboard = await request.server.prisma.leaderboard.findUnique({
+      where: {
+        publicSlug: publicSlug,
+      },
+      include: {
+        leaderboardEntries: {
+          orderBy: {
+            id: "asc",
+          },
+        },
+      },
+    });
+
+    if (!leaderboard) {
+      throw new Error(`Leaderboard with public slug ${publicSlug} not found`);
+    }
+
+    return leaderboard;
+  }
 }
