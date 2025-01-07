@@ -70,6 +70,7 @@ async function leaderboardLiveRoutes(fastify: FastifyInstance, options: any) {
         }
       }, 1000);
 
+
       // Clean up the interval when the client disconnects
       socket.on("close", () => {
         clearInterval(interval);
